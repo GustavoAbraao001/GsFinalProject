@@ -7,15 +7,15 @@ public sealed class HouseholdDifficulty : MonoBehaviour
 
     [Header("Progressão")]
     [SerializeField, Min(0.1f)]
-    private float rampDurationSeconds = 300f;
+    private float rampDurationSeconds = 120f;
 
     [Tooltip("Quanto maior o valor, mais acelerado será o crescimento no final.")]
     [SerializeField, Range(0f, 5f)]
-    private float exponentialGrowth = 2.5f;
+    private float exponentialGrowth = 1.8f;
 
     [Header("Multiplicadores finais")]
     [SerializeField, Range(0.2f, 1f)]
-    public float finalDeadLineMultiplier = 0.65f;
+    public float finalDeadLineMultiplier = 0.4f;
 
     [SerializeField, Range(0.1f, 1f)]
     private float finalPatrolPausedMultiplier = 0.35f;
@@ -44,11 +44,11 @@ public sealed class HouseholdDifficulty : MonoBehaviour
             if (exponentialGrowth <= 0.001f)
                 return normalizedTime;
 
-            float numerator = Mathf.Exp(
-                exponentialGrowth * normalizedTime
-            ) - 1f;
+            float numerator =
+                Mathf.Exp(exponentialGrowth * normalizedTime) - 1f;
 
-            float denominator = Mathf.Exp(exponentialGrowth) - 1f;
+            float denominator =
+                Mathf.Exp(exponentialGrowth) - 1f;
 
             return Mathf.Clamp01(numerator / denominator);
         }

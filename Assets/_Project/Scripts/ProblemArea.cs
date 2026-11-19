@@ -235,7 +235,7 @@ public sealed class ProblemArea : MonoBehaviour
             return;
 
         float difficulty = HouseholdDifficulty.Instance
-            ? HouseholdDifficulty.Instance.finalDeadLineMultiplier
+            ? HouseholdDifficulty.Instance.DeadLineMultiplier
             : 1f;
 
         currentProblemDuration = problemDuration * difficulty;
