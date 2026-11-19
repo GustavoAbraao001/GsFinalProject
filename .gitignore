@@ -10,6 +10,14 @@
 /[Oo]bj/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+# Builds
+/[Bb]uild/
+/[Bb]uilds/
+
+# Builds Android e Mac
+*.apk
+*.aab
+*.app
 *.log
 
 # Builds: PERMITIR ENVIO AO GITHUB
