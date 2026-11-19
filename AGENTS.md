@@ -2,7 +2,7 @@
 - Project name: GsFinalProject
 - Unity version: Unity 6000.5.8f1
 - Active game object:
-  - Name: RobotPlayer
+  - Name: MainMenuPanel
   - Tag: Untagged
-  - Layer: Player
+  - Layer: UI
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
