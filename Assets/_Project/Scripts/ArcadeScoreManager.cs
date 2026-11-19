@@ -1,4 +1,3 @@
-
 using System;
 using TMPro;
 using UnityEngine;
@@ -79,7 +78,7 @@ public sealed class ArcadeScoreManager : MonoBehaviour
         {
             if (GameFlowManager.Instance)
             {
-                GameFlowManager.Instance.TriggerGameOver();
+                GameFlowManager.Instance.TriggerGameOver(GameOverReason.FireOutOfControl);
             }
             else
             {

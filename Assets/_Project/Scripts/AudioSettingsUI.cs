@@ -1,4 +1,3 @@
-
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,6 +5,9 @@ using UnityEngine.UI;
 
 public sealed class AudioSettingsUI : MonoBehaviour
 {
+    /// <summary>True enquanto o painel de configurações está aberto (usado pelo PauseController).</summary>
+    public static bool IsOpen { get; private set; }
+
     [Header("Sliders")]
     [SerializeField] private Slider masterSlider;
     [SerializeField] private Slider musicSlider;
@@ -121,8 +123,15 @@ public sealed class AudioSettingsUI : MonoBehaviour
             label.text = Mathf.RoundToInt(value * 100f) + "%";
     }
 
+    private void OnEnable()
+    {
+        IsOpen = true;
+    }
+
     private void OnDisable()
     {
+        IsOpen = false;
+
         if (audioManager)
             audioManager.SaveVolumeSettings();
     }

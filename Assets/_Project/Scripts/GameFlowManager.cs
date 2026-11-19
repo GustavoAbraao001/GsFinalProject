@@ -1,9 +1,17 @@
+
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+public enum GameOverReason
+{
+    NoExtinguishers,
+    FireOutOfControl
+}
+
 public sealed class GameFlowManager : MonoBehaviour
 {
     public static GameFlowManager Instance { get; private set; }
@@ -17,23 +25,36 @@ public sealed class GameFlowManager : MonoBehaviour
     [SerializeField] private TMP_Text titleLabel;
     [SerializeField] private TMP_Text messageLabel;
     [SerializeField] private string title = "GAME OVER";
-    [SerializeField, TextArea(2, 4)] private string message = "A casa ficou sem extintores.";
-    [SerializeField, Min(0f)] private float buttonsDelaySeconds = 2f;
+
+    [SerializeField, TextArea(2, 4)]
+    private string message = "Os extintores acabaram.";
+
+    [SerializeField, TextArea(2, 4)]
+    private string fireOutOfControlMessage = "O incêndio saiu do controle.";
+
+    [SerializeField, Min(0f)]
+    private float buttonsDelaySeconds = 2f;
+
     [SerializeField] private GameObject buttonsContainer;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button mainMenuButton;
 
     [Header("Parar o gameplay")]
-    [Tooltip("Arraste os scripts de controle/interação do robô e os BabyPatrols dos NPCs.")]
+    [Tooltip("Arraste os scripts de controle/interação do robô e os BabyPatrols.")]
     [SerializeField] private Behaviour[] behavioursToDisable;
-    [Tooltip("Arraste também os NavMeshAgents dos bebês para interromper a navegação explicitamente.")]
+
+    [Tooltip("Arraste também os NavMeshAgents dos NPCs.")]
     [SerializeField] private NavMeshAgent[] agentsToStop;
 
     private void Awake()
     {
         if (Instance && Instance != this)
         {
-            Debug.LogError("Há mais de um GameFlowManager na cena de gameplay.", this);
+            Debug.LogError(
+                "Há mais de um GameFlowManager na cena de gameplay.",
+                this
+            );
+
             Destroy(gameObject);
             return;
         }
@@ -42,19 +63,32 @@ public sealed class GameFlowManager : MonoBehaviour
         IsGameOver = false;
         Time.timeScale = 1f;
 
-        if (gameOverPanel) gameOverPanel.SetActive(false);
-        if (buttonsContainer) buttonsContainer.SetActive(false);
-        if (titleLabel) titleLabel.text = title;
-        if (messageLabel) messageLabel.text = message;
+        if (gameOverPanel)
+            gameOverPanel.SetActive(false);
 
-        if (restartButton) restartButton.onClick.AddListener(RestartGameplay);
-        if (mainMenuButton) mainMenuButton.onClick.AddListener(ReturnToMainMenu);
+        if (buttonsContainer)
+            buttonsContainer.SetActive(false);
+
+        if (titleLabel)
+            titleLabel.text = title;
+
+        if (messageLabel)
+            messageLabel.text = message;
+
+        if (restartButton)
+            restartButton.onClick.AddListener(RestartGameplay);
+
+        if (mainMenuButton)
+            mainMenuButton.onClick.AddListener(ReturnToMainMenu);
     }
 
     private void OnDestroy()
     {
-        if (restartButton) restartButton.onClick.RemoveListener(RestartGameplay);
-        if (mainMenuButton) mainMenuButton.onClick.RemoveListener(ReturnToMainMenu);
+        if (restartButton)
+            restartButton.onClick.RemoveListener(RestartGameplay);
+
+        if (mainMenuButton)
+            mainMenuButton.onClick.RemoveListener(ReturnToMainMenu);
 
         if (Instance == this)
         {
@@ -63,22 +97,52 @@ public sealed class GameFlowManager : MonoBehaviour
         }
     }
 
+    // Este método continua reservado para a situação de falta de extintores.
     public void TriggerGameOver()
     {
-        if (IsGameOver) return;
+        TriggerGameOver(GameOverReason.NoExtinguishers);
+    }
+
+    public void TriggerGameOver(GameOverReason reason)
+    {
+        if (IsGameOver)
+        {
+            Debug.LogWarning(
+                $"Game Over já estava ativo. Motivo ignorado: {reason}.",
+                this
+            );
+
+            return;
+        }
 
         IsGameOver = true;
         Time.timeScale = 0f;
+
+        string selectedMessage = GetMessage(reason);
+
+        Debug.Log(
+            $"GAME OVER INICIADO | Motivo: {reason} | Mensagem: {selectedMessage}",
+            this
+        );
 
         if (ArcadeScoreManager.Instance)
             ArcadeScoreManager.Instance.SetPassiveScoringEnabled(false);
 
         StopGameplayBehaviours();
 
-        if (titleLabel) titleLabel.text = title;
-        if (messageLabel) messageLabel.text = message;
-        if (gameOverPanel) gameOverPanel.SetActive(true);
-        else Debug.LogError("GameFlowManager não tem Game Over Panel atribuído.", this);
+        if (titleLabel)
+            titleLabel.text = title;
+
+        if (messageLabel)
+            messageLabel.text = selectedMessage;
+
+        if (gameOverPanel)
+            gameOverPanel.SetActive(true);
+        else
+            Debug.LogError(
+                "GameFlowManager não tem Game Over Panel atribuído.",
+                this
+            );
 
         if (buttonsContainer)
         {
@@ -87,7 +151,23 @@ public sealed class GameFlowManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("GameFlowManager não tem Buttons Container; os botões não serão exibidos.", this);
+            Debug.LogWarning(
+                "GameFlowManager não tem Buttons Container atribuído.",
+                this
+            );
+        }
+    }
+
+    private string GetMessage(GameOverReason reason)
+    {
+        switch (reason)
+        {
+            case GameOverReason.FireOutOfControl:
+                return fireOutOfControlMessage;
+
+            case GameOverReason.NoExtinguishers:
+            default:
+                return message;
         }
     }
 
@@ -105,7 +185,9 @@ public sealed class GameFlowManager : MonoBehaviour
     private IEnumerator RevealButtonsAfterDelay()
     {
         yield return new WaitForSecondsRealtime(buttonsDelaySeconds);
-        if (buttonsContainer) buttonsContainer.SetActive(true);
+
+        if (buttonsContainer)
+            buttonsContainer.SetActive(true);
     }
 
     private void StopGameplayBehaviours()
@@ -113,13 +195,19 @@ public sealed class GameFlowManager : MonoBehaviour
         if (behavioursToDisable != null)
         {
             foreach (Behaviour behaviour in behavioursToDisable)
-                if (behaviour && behaviour != this) behaviour.enabled = false;
+            {
+                if (behaviour && behaviour != this)
+                    behaviour.enabled = false;
+            }
         }
 
         if (agentsToStop != null)
         {
             foreach (NavMeshAgent agent in agentsToStop)
-                if (agent && agent.enabled && agent.isOnNavMesh) agent.isStopped = true;
+            {
+                if (agent && agent.enabled && agent.isOnNavMesh)
+                    agent.isStopped = true;
+            }
         }
     }
 
@@ -127,7 +215,10 @@ public sealed class GameFlowManager : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(sceneName))
         {
-            Debug.LogError("O nome da cena que será carregada está vazio.");
+            Debug.LogError(
+                "O nome da cena que será carregada está vazio."
+            );
+
             return;
         }
 
