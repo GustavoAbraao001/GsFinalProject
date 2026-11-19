@@ -1292,6 +1292,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameOverPanelRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 8524562389466932881, guid: 9c155e8604c9e5f46bdbb67392d1aaeb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1955,6 +1959,10 @@ PrefabInstance:
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 4993302627917026860}
+    - target: {fileID: 6502828259025165997, guid: 07695de2643f8144b903cfd6f164ad64, type: 3}
+      propertyPath: settingsPanel
+      value: 
+      objectReference: {fileID: 534735302}
     - target: {fileID: 8255551114404412213, guid: 07695de2643f8144b903cfd6f164ad64, type: 3}
       propertyPath: exponentialGrowth
       value: 4.5
@@ -17744,7 +17752,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!4 &4005393330167236149
 Transform:
@@ -26054,6 +26062,8 @@ GameObject:
   - component: {fileID: 8401952775886327454}
   - component: {fileID: 7416691522719848047}
   - component: {fileID: 8401952775886327455}
+  - component: {fileID: 8401952775886327457}
+  - component: {fileID: 8401952775886327456}
   m_Layer: 0
   m_Name: Cube.005
   m_TagString: Untagged
@@ -27382,6 +27392,40 @@ MonoBehaviour:
   riseDistance: 0.25
   riseSpeed: 0.5
   startDelay: 0
+--- !u!114 &8401952775886327456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7623545440073020195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da3f66c914e1f042a9a41f724764a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FloodSlowZone
+  speedMultiplier: 0.5
+--- !u!65 &8401952775886327457
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7623545440073020195}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.053819038, y: 0.034709617, z: 0.019336108}
+  m_Center: {x: -0.005102086, y: -0.0026455733, z: -0.00033242156}
 --- !u!33 &8405521900383009960
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -28169,6 +28213,8 @@ GameObject:
   - component: {fileID: 570340518961517526}
   - component: {fileID: 5102674499668856353}
   - component: {fileID: 8730721923237104134}
+  - component: {fileID: 8730721923237104136}
+  - component: {fileID: 8730721923237104135}
   m_Layer: 0
   m_Name: AguaChao
   m_TagString: Untagged
@@ -28191,6 +28237,40 @@ MonoBehaviour:
   riseDistance: 0.24
   riseSpeed: 0.5
   startDelay: 0
+--- !u!114 &8730721923237104135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8730721923237104133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da3f66c914e1f042a9a41f724764a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FloodSlowZone
+  speedMultiplier: 0.5
+--- !u!65 &8730721923237104136
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8730721923237104133}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.027170189, y: 0.019201387, z: 0.019336158}
+  m_Center: {x: 0.0035851016, y: 0.00001736078, z: 0.0003319448}
 --- !u!4 &8742196469470786295
 Transform:
   m_ObjectHideFlags: 0
